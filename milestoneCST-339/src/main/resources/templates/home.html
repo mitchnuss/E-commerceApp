@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <!-- Add any necessary CSS or JavaScript files -->
+</head>
+<body>
+    <h1>Welcome to the Ecommerce Application!</h1>
+    
+    <nav>
+        <ul>
+            <li><a th:href="@{/login}">Login</a></li>
+            <li><a th:href="@{/register}">Register</a></li>
+            <li><a th:href="@{/products}">All Products</a></li>
+            <li><a th:href="@{/create-product}">Create Product</a></li>
+        </ul>
+    </nav>
+</body>
+</html>
