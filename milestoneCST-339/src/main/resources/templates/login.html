@@ -24,6 +24,10 @@
         </div>
     </form>
     
+    <div th:if="${errorMessage}" class="alert alert-danger">
+		<p style="color: red;" th:text="${errorMessage}"></p>
+	</div>
+    
     <p>Don't have an account? <a th:href="@{/register}">Register</a></p>
 </body>
 </html>
