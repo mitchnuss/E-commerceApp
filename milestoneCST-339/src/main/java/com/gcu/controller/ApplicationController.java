@@ -40,24 +40,24 @@ public class ApplicationController {
     
     @PostMapping("/login")
     public String loginUser(@RequestParam("username") String username,
-    						@RequestParam("password") String password,
-    						RedirectAttributes redirectAttributes,
-    						Model model) {
-    try {
-    UserModel user = userService.getUserByUsername(username);
-    if (user != null && passwordEncoder.matches(password, user.getPassword())) {
-    	// Authentication successful
-    	// You can set the user authentication status or perform additional actions here
-    	return "redirect:/products";
-    } else {
-    	// Authentication failed, show error message
-    	model.addAttribute("errorMessage", "Invalid username or password");
-    	return "login";
-    }
-    } catch (IllegalArgumentException e) {
-    	model.addAttribute("errorMessage", "Invalid username or password");
-    	return "login";
-    	}
+                            @RequestParam("password") String password,
+                            RedirectAttributes redirectAttributes,
+                            Model model) {
+        try {
+            UserModel user = userService.getUserByUsername(username);
+            if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+                // Authentication successful
+                // You can set the user authentication status or perform additional actions here
+                return "redirect:/products";
+            } else {
+                // Authentication failed, show error message
+                model.addAttribute("errorMessage", "Invalid username or password");
+                return "login";
+            }
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", "Invalid username or password");
+            return "login";
+        }
     }
 
     @GetMapping("/register")
@@ -79,17 +79,10 @@ public class ApplicationController {
         return "products";
     }
 
-    @GetMapping("/products/{id}")
-    public String getProductById(@PathVariable("id") Long id, Model model) {
-    	ProductModel product = productService.getProductById(id);
-        model.addAttribute("product", product);
-        return "product-details";
-    }
-
     @GetMapping("/products/new")
-    public String showProductForm(Model model) {
+    public String showCreateProductForm(Model model) {
         model.addAttribute("product", new ProductModel());
-        return "product-form";
+        return "createProduct";
     }
 
     @PostMapping("/products/new")
@@ -99,25 +92,31 @@ public class ApplicationController {
         return "redirect:/products";
     }
 
-    @GetMapping("/products/{id}/edit")
-    public String showEditProductForm(@PathVariable("id") Long id, Model model) {
-    	ProductModel product = productService.getProductById(id);
+    @GetMapping("/products/delete/{id}")
+    public String showDeleteProductForm(@PathVariable("id") Long id, Model model) {
+        ProductModel product = productService.getProductById(id);
         model.addAttribute("product", product);
-        return "product-form";
+        return "deleteProduct";
     }
 
-    @PostMapping("/products/{id}/edit")
-    public String updateProduct(@PathVariable("id") Long id, ProductModel product, RedirectAttributes redirectAttributes) {
-        product.setId(id);
-        productService.saveProduct(product);
-        redirectAttributes.addFlashAttribute("successMessage", "Product updated successfully");
+    @PostMapping("/products/delete")
+    public String deleteProduct(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
+        productService.deleteProduct(id);
+        redirectAttributes.addFlashAttribute("successMessage", "Product deleted successfully");
         return "redirect:/products";
     }
 
-    @PostMapping("/products/{id}/delete")
-    public String deleteProduct(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
-        productService.deleteProduct(id);
-        redirectAttributes.addFlashAttribute("successMessage", "Product deleted successfully");
+    @GetMapping("/products/update/{id}")
+    public String showUpdateProductForm(@PathVariable("id") Long id, Model model) {
+        ProductModel product = productService.getProductById(id);
+        model.addAttribute("product", product);
+        return "updateProduct";
+    }
+
+    @PostMapping("/products/update")
+    public String updateProduct(ProductModel product, RedirectAttributes redirectAttributes) {
+        productService.saveProduct(product);
+        redirectAttributes.addFlashAttribute("successMessage", "Product updated successfully");
         return "redirect:/products";
     }
 }

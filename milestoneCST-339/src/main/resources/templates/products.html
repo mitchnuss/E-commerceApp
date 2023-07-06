@@ -24,9 +24,9 @@
                 <td th:text="${product.price}"></td>
                 <td th:text="${product.availability}"></td>
                 <td>
-                    <a th:href="@{/productDetails/{productId}(productId=${product.id})}">Details</a> |
-                    <a th:href="@{/updateProduct/{productId}(productId=${product.id})}">Update</a> |
-                    <a th:href="@{/deleteProduct/{productId}(productId=${product.id})}">Delete</a>
+                    <a th:href="@{/productDetails/{id}(id=${product.id})}">Details</a> |
+                    <a th:href="@{/updateProduct/{id}(id=${product.id})}">Update</a> |
+                    <a th:href="@{/deleteProduct/{id}(id=${product.id})}">Delete</a>
                 </td>
             </tr>
         </tbody>
