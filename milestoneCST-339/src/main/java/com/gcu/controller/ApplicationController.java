@@ -14,10 +14,8 @@ import com.gcu.model.UserModel;
 import com.gcu.service.ProductService;
 import com.gcu.service.UserService;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-import java.security.Principal;
 import java.util.List;
 
 @SpringBootApplication
