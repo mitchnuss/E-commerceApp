@@ -53,6 +53,7 @@ public class ApplicationController {
         try {
             UserModel user = userService.getUserByUsername(username);
             if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+            	//sets name of logged in user
             	session.setAttribute("loggedInUser", user);
                 // Authentication successful
                 // You can set the user authentication status or perform additional actions here
