@@ -14,6 +14,9 @@ import com.gcu.model.UserModel;
 import com.gcu.service.ProductService;
 import com.gcu.service.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 import java.security.Principal;
 import java.util.List;
 
@@ -46,10 +49,11 @@ public class ApplicationController {
     public String loginUser(@RequestParam("username") String username,
                             @RequestParam("password") String password,
                             RedirectAttributes redirectAttributes,
-                            Model model) {
+                            Model model, HttpSession session) {
         try {
             UserModel user = userService.getUserByUsername(username);
             if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+            	session.setAttribute("loggedInUser", user);
                 // Authentication successful
                 // You can set the user authentication status or perform additional actions here
                 return "redirect:/products";
@@ -76,16 +80,20 @@ public class ApplicationController {
         return "redirect:/login";
     }
 
-    @GetMapping("/products")
-    public String getProducts(Model model, Principal userPrincipal) {
-        List<ProductModel> products = productService.getAllProducts();
-        String username = userPrincipal.getName();
-        UserModel user = userService.getUserByUsername(username);
-        model.addAttribute("products", products);
-        model.addAttribute("person", user.getFirstName());
-       System.out.println(user);
-        return "products";
-    }
+	@GetMapping("/products")
+	public String getProducts(Model model, HttpSession session) {
+		
+		if (session.getAttribute("loggedInUser") == null) {
+			return "redirect:/login";
+		}
+		
+		UserModel user = (UserModel) session.getAttribute("loggedInUser");
+		List<ProductModel> products = productService.getAllProducts();
+		model.addAttribute("products", products);
+		model.addAttribute("person", user.getFirstName());
+        System.out.println(user);
+		return "products";
+	}
 
     @GetMapping("/products/new")
     public String showCreateProductForm(Model model) {
