@@ -2,6 +2,7 @@ package com.gcu.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+//import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import com.gcu.model.UserModel;
 import com.gcu.service.ProductService;
 import com.gcu.service.UserService;
 
+import java.security.Principal;
 import java.util.List;
 
 @SpringBootApplication
@@ -75,9 +77,13 @@ public class ApplicationController {
     }
 
     @GetMapping("/products")
-    public String getProducts(Model model) {
+    public String getProducts(Model model, Principal userPrincipal) {
         List<ProductModel> products = productService.getAllProducts();
+        String username = userPrincipal.getName();
+        UserModel user = userService.getUserByUsername(username);
         model.addAttribute("products", products);
+        model.addAttribute("person", user.getFirstName());
+       System.out.println(user);
         return "products";
     }
 
