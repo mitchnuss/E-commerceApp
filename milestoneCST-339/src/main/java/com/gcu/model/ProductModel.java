@@ -7,14 +7,14 @@ import javax.persistence.Id;
 
 @Entity
 public class ProductModel {
-    @Id
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     private String name;
     private String description;
     private double price;
-    private boolean availability;
+    private int quantity;
 
     // Getters and setters
     public Long getId() {
@@ -49,11 +49,11 @@ public class ProductModel {
         this.price = price;
     }
     
-    public boolean getAvailability() {
-        return availability;
+    public int getQuantity() {
+        return quantity;
     }
-    
-    public void setAvailability(boolean availability) {
-    	this.availability = availability;
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

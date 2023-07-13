@@ -7,13 +7,13 @@
 </head>
 <body>
     <h1>Products</h1>
-    
+    <h2>Welcome, <span th:text="${person}"></span></h2>
     <table>
         <thead>
             <tr>
                 <th>Name</th>
                 <th>Price</th>
-                <th>Availability</th>
+                <th>Quantity</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -22,16 +22,16 @@
             <tr th:each="product : ${products}">
                 <td th:text="${product.name}"></td>
                 <td th:text="${product.price}"></td>
-                <td th:text="${product.availability}"></td>
+                <td th:text="${product.quantity}"></td>
                 <td>
-                    <a th:href="@{/productDetails/{id}(id=${product.id})}">Details</a> |
-                    <a th:href="@{/updateProduct/{id}(id=${product.id})}">Update</a> |
-                    <a th:href="@{/deleteProduct/{id}(id=${product.id})}">Delete</a>
+                    <a th:href="@{/products/productDetails/{id}(id=${product.id})}">Details</a> |
+                    <a th:href="@{/products/updateProduct/{id}(id=${product.id})}">Update</a> |
+                    <a th:href="@{/products/deleteProduct/{id}(id=${product.id})}">Delete</a>
                 </td>
             </tr>
         </tbody>
     </table>
     
-    <p><a th:href="@{/createProduct}">Create Product</a></p>
+    <p><a th:href="@{/products/new}">Create Product</a></p>
 </body>
 </html>

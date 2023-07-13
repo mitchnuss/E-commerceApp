@@ -1,6 +1,8 @@
 package com.gcu.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+//import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,8 +14,11 @@ import com.gcu.model.UserModel;
 import com.gcu.service.ProductService;
 import com.gcu.service.UserService;
 
+import jakarta.servlet.http.HttpSession;
+
 import java.util.List;
 
+@SpringBootApplication
 @Controller
 public class ApplicationController {
     private final ProductService productService;
@@ -42,10 +47,12 @@ public class ApplicationController {
     public String loginUser(@RequestParam("username") String username,
                             @RequestParam("password") String password,
                             RedirectAttributes redirectAttributes,
-                            Model model) {
+                            Model model, HttpSession session) {
         try {
             UserModel user = userService.getUserByUsername(username);
             if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+            	//sets name of logged in user
+            	session.setAttribute("loggedInUser", user);
                 // Authentication successful
                 // You can set the user authentication status or perform additional actions here
                 return "redirect:/products";
@@ -73,9 +80,15 @@ public class ApplicationController {
     }
 
     @GetMapping("/products")
-    public String getProducts(Model model) {
+    public String getProducts(Model model, HttpSession session) {
+        if (session.getAttribute("loggedInUser") == null) {
+            return "redirect:/login";
+        }
+        
+        UserModel user = (UserModel) session.getAttribute("loggedInUser");
         List<ProductModel> products = productService.getAllProducts();
         model.addAttribute("products", products);
+        model.addAttribute("person", user.getFirstName());
         return "products";
     }
 
@@ -89,34 +102,6 @@ public class ApplicationController {
     public String saveProduct(ProductModel product, RedirectAttributes redirectAttributes) {
         productService.saveProduct(product);
         redirectAttributes.addFlashAttribute("successMessage", "Product saved successfully");
-        return "redirect:/products";
-    }
-
-    @GetMapping("/products/delete/{id}")
-    public String showDeleteProductForm(@PathVariable("id") Long id, Model model) {
-        ProductModel product = productService.getProductById(id);
-        model.addAttribute("product", product);
-        return "deleteProduct";
-    }
-
-    @PostMapping("/products/delete")
-    public String deleteProduct(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
-        productService.deleteProduct(id);
-        redirectAttributes.addFlashAttribute("successMessage", "Product deleted successfully");
-        return "redirect:/products";
-    }
-
-    @GetMapping("/products/update/{id}")
-    public String showUpdateProductForm(@PathVariable("id") Long id, Model model) {
-        ProductModel product = productService.getProductById(id);
-        model.addAttribute("product", product);
-        return "updateProduct";
-    }
-
-    @PostMapping("/products/update")
-    public String updateProduct(ProductModel product, RedirectAttributes redirectAttributes) {
-        productService.saveProduct(product);
-        redirectAttributes.addFlashAttribute("successMessage", "Product updated successfully");
         return "redirect:/products";
     }
 }
