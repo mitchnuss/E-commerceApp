@@ -79,7 +79,7 @@ public class ApplicationController {
         return "redirect:/login";
     }
 
-    @GetMapping("/products")
+@GetMapping("/products")
     public String getProducts(Model model, HttpSession session) {
         if (session.getAttribute("loggedInUser") == null) {
             return "redirect:/login";
