@@ -1,23 +1,27 @@
 package com.gcu.service;
 
 import com.gcu.model.ProductModel;
-import com.gcu.repository.ProductRepository;
+import com.gcu.repository.ProductRepositoryImpl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProductService {
-    private final ProductRepository productRepository;
+	private final ProductRepositoryImpl productRepository;
 
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepositoryImpl productRepository) {
         this.productRepository = productRepository;
     }
 
     public List<ProductModel> getAllProducts() {
-        return productRepository.findAll();
+        Iterable<ProductModel> iterable = productRepository.findAll();
+        return StreamSupport.stream(iterable.spliterator(), false)
+                .collect(Collectors.toList());
     }
 
     public ProductModel getProductById(Long id) {
