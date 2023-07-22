@@ -1,7 +1,8 @@
 package com.gcu.service;
 
 import com.gcu.model.UserModel;
-import com.gcu.repository.UserRepository;
+import com.gcu.repository.UserRepositoryInterface;
+
 
 import java.util.Optional;
 
@@ -11,10 +12,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    private final UserRepository userRepository;
+    private final UserRepositoryInterface userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserService(UserRepositoryInterface userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }

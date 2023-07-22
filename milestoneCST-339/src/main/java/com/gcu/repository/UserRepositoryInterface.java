@@ -8,7 +8,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository {
+public interface UserRepositoryInterface {
     List<UserModel> findAll();
 
     Optional<UserModel> findById(Long id);
@@ -18,4 +18,6 @@ public interface UserRepository {
     void deleteById(Long id);
 
     Optional<UserModel> findByUsername(String username);
+    
+    void test();
 }

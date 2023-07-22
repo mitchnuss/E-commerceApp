@@ -2,11 +2,75 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Home</title>
     <!-- Add any necessary CSS or JavaScript files -->
+    <link href="http://fonts.googleapis.com/css?family=Corben:bold" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Nobile" rel="stylesheet" type="text/css">
+    <style>
+        body {
+            background-color: #f1f1f1;
+            font-family: 'Nobile', Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Corben', Georgia, Times, serif;
+            font-size: 36px;
+            margin: 0;
+        }
+
+        nav {
+            background-color: #555;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 5px 10px;
+        }
+
+        nav ul li a:hover {
+            background-color: #666;
+        }
+
+        main {
+            margin: 20px;
+        }
+
+        p,
+        div {
+            background-color: #fff;
+            border: 2px solid #ccc;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
-<body>
+
+	<header>
     <h1>Login</h1>
+    </header>
     
     <form action="#" th:action="@{/login}" method="post">
         <div>

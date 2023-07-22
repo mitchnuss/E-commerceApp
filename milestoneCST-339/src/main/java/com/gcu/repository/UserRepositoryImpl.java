@@ -8,8 +8,8 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
-@Repository
-public class UserRepositoryImpl implements UserRepository {
+//@Repository
+public class UserRepositoryImpl implements UserRepositoryInterface {
     private List<UserModel> users = new ArrayList<>();
 
     @Override
@@ -40,4 +40,10 @@ public class UserRepositoryImpl implements UserRepository {
                 .filter(user -> user.getUsername().equals(username))
                 .findFirst();
     }
+
+    //test method to make sure SpringConfig works
+    @Override
+	public void test() {
+	System.out.println("Hello from the OrdersBusinessService");	
+	}
 }
