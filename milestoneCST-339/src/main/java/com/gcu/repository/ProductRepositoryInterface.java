@@ -1,4 +1,3 @@
-// ProductRepositoryInterface.java
 package com.gcu.repository;
 
 import com.gcu.model.ProductModel;
