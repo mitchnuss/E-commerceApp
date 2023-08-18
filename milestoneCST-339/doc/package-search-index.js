@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.example.demo"},{"l":"com.gcu.config"},{"l":"com.gcu.controller"},{"l":"com.gcu.model"},{"l":"com.gcu.repository"},{"l":"com.gcu.service"}];updateSearchResults();

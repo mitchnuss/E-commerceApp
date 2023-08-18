@@ -24,9 +24,11 @@ public class ProductRestController {
         this.productService = productService;
     }
 
+    // Get all products (authenticated)
     @GetMapping
     public ResponseEntity<?> getAllProducts(HttpServletRequest request) {
         if (!isUserLoggedIn(request)) {
+            // Unauthorized access response with links to Home and Login pages
             String errorMessage = "Unauthorized access. Please log in.";
             String homePageLink = "/";
             String loginPageLink = "/login";
@@ -43,9 +45,10 @@ public class ProductRestController {
         }
         
         List<ProductModel> products = productService.getAllProducts();
-        return ResponseEntity.ok(products);
+        return ResponseEntity.ok(products); // Return a list of products
     }
 
+    // Get a product by ID (authenticated)
     @GetMapping("/{id}")
     public ResponseEntity<?> getProductById(@PathVariable Long id, HttpServletRequest request) {
         if (!isUserLoggedIn(request)) {
@@ -56,9 +59,10 @@ public class ProductRestController {
         if (product == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(product);
+        return ResponseEntity.ok(product); // Return the requested product
     }
 
+    // Check if user is logged in
     private boolean isUserLoggedIn(HttpServletRequest request) {
         HttpSession session = request.getSession();
         return session.getAttribute("loggedInUser") != null;

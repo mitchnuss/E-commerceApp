@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/products")
 public class ProductController {
+
     private final ProductService productService;
 
     @Autowired
@@ -17,38 +18,43 @@ public class ProductController {
         this.productService = productService;
     }
 
+    // Show details of a specific product
     @GetMapping("/productDetails/{id}")
     public String showProductDetails(@PathVariable("id") Long id, Model model) {
         ProductModel product = productService.getProductById(id);
         model.addAttribute("product", product);
-        return "productDetails";
+        return "productDetails"; // Return the product details template
     }
 
+    // Show form to update a product
     @GetMapping("/updateProduct/{id}")
     public String showUpdateProductForm(@PathVariable("id") Long id, Model model) {
         ProductModel product = productService.getProductById(id);
         model.addAttribute("product", product);
-        return "updateProduct";
+        return "updateProduct"; // Return the update product form template
     }
 
+    // Process product update
     @PostMapping("/updateProduct")
     public String updateProduct(ProductModel product, Model model) {
-        productService.saveProduct(product);
+        productService.saveProduct(product); // Save the updated product
         model.addAttribute("successMessage", "Product updated successfully");
-        return "redirect:/products";
+        return "redirect:/products"; // Redirect to products page after successful update
     }
 
+    // Show form to delete a product
     @GetMapping("/deleteProduct/{id}")
     public String showDeleteProductForm(@PathVariable("id") Long id, Model model) {
         ProductModel product = productService.getProductById(id);
         model.addAttribute("product", product);
-        return "deleteProduct";
+        return "deleteProduct"; // Return the delete product form template
     }
 
+    // Process product deletion
     @PostMapping("/deleteProduct")
     public String deleteProduct(@RequestParam("id") Long id, Model model) {
-        productService.deleteProduct(id);
+        productService.deleteProduct(id); // Delete the product
         model.addAttribute("successMessage", "Product deleted successfully");
-        return "redirect:/products";
+        return "redirect:/products"; // Redirect to products page after successful deletion
     }
 }
