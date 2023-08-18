@@ -14,9 +14,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller class that handles API requests related to products.
+ */
 @RestController
 @RequestMapping("/api/products")
 public class ProductRestController {
+
     private final ProductService productService;
 
     @Autowired
@@ -24,7 +28,12 @@ public class ProductRestController {
         this.productService = productService;
     }
 
-    // Get all products (authenticated)
+    /**
+     * Retrieves a list of all products (authenticated).
+     *
+     * @param request The HTTP request object.
+     * @return A ResponseEntity containing a list of products or an unauthorized response.
+     */
     @GetMapping
     public ResponseEntity<?> getAllProducts(HttpServletRequest request) {
         if (!isUserLoggedIn(request)) {
@@ -48,7 +57,13 @@ public class ProductRestController {
         return ResponseEntity.ok(products); // Return a list of products
     }
 
-    // Get a product by ID (authenticated)
+    /**
+     * Retrieves a product by its ID (authenticated).
+     *
+     * @param id      The ID of the product to retrieve.
+     * @param request The HTTP request object.
+     * @return A ResponseEntity containing the requested product or an unauthorized response.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<?> getProductById(@PathVariable Long id, HttpServletRequest request) {
         if (!isUserLoggedIn(request)) {
@@ -62,7 +77,12 @@ public class ProductRestController {
         return ResponseEntity.ok(product); // Return the requested product
     }
 
-    // Check if user is logged in
+    /**
+     * Checks if a user is logged in.
+     *
+     * @param request The HTTP request object.
+     * @return True if the user is logged in, false otherwise.
+     */
     private boolean isUserLoggedIn(HttpServletRequest request) {
         HttpSession session = request.getSession();
         return session.getAttribute("loggedInUser") != null;

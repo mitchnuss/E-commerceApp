@@ -17,6 +17,9 @@ import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
 
+/**
+ * Controller class responsible for handling application routes and user interactions.
+ */
 @SpringBootApplication
 @Controller
 public class ApplicationController {
@@ -35,19 +38,33 @@ public class ApplicationController {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    // Home page mapping
+    /**
+     * Handle the home page route.
+     * @return The home page template.
+     */
     @GetMapping("/")
     public String home() {
         return "home"; // Return the home page template
     }
 
-    // Login page mapping
+    /**
+     * Handle the login page route.
+     * @return The login page template.
+     */
     @GetMapping("/login")
     public String login() {
         return "login"; // Return the login page template
     }
     
-    // Process login form submission
+    /**
+     * Handle the login form submission.
+     * @param username User's username.
+     * @param password User's password.
+     * @param redirectAttributes Redirect attributes for flash messages.
+     * @param model Model for data binding.
+     * @param session HttpSession for session management.
+     * @return Redirect to products page if login successful, otherwise return login page with error message.
+     */
     @PostMapping("/login")
     public String loginUser(@RequestParam("username") String username,
                             @RequestParam("password") String password,
@@ -56,8 +73,8 @@ public class ApplicationController {
         try {
             UserModel user = userService.getUserByUsername(username);
             if (user != null && passwordEncoder.matches(password, user.getPassword())) {
-            	// Set name of logged in user in session
-            	session.setAttribute("loggedInUser", user);
+                // Set name of logged in user in session
+                session.setAttribute("loggedInUser", user);
                 // Redirect to products page after successful login
                 return "redirect:/products";
             } else {
@@ -71,13 +88,21 @@ public class ApplicationController {
         }
     }
 
-    // Registration page mapping
+    /**
+     * Handle the registration page route.
+     * @return The registration page template.
+     */
     @GetMapping("/register")
     public String register() {
         return "register"; // Return the registration page template
     }
 
-    // Process user registration
+    /**
+     * Handle user registration form submission.
+     * @param user UserModel containing user information.
+     * @param redirectAttributes Redirect attributes for flash messages.
+     * @return Redirect to login page after successful registration.
+     */
     @PostMapping("/register")
     public String registerUser(UserModel user, RedirectAttributes redirectAttributes) {
         userService.registerUser(user); // Register the user
@@ -85,7 +110,12 @@ public class ApplicationController {
         return "redirect:/login"; // Redirect to login page after successful registration
     }
 
-    // Products page mapping
+    /**
+     * Handle the products page route.
+     * @param model Model for data binding.
+     * @param session HttpSession for session management.
+     * @return Redirect to login page if user is not logged in, otherwise return products page template.
+     */
     @GetMapping("/products")
     public String getProducts(Model model, HttpSession session) {
         if (session.getAttribute("loggedInUser") == null) {
@@ -99,14 +129,23 @@ public class ApplicationController {
         return "products"; // Return the products page template
     }
 
-    // Create new product form mapping
+    /**
+     * Handle the create new product form route.
+     * @param model Model for data binding.
+     * @return The create product form template.
+     */
     @GetMapping("/products/new")
     public String showCreateProductForm(Model model) {
         model.addAttribute("product", new ProductModel());
         return "createProduct"; // Return the create product form template
     }
 
-    // Process new product creation
+    /**
+     * Handle new product creation form submission.
+     * @param product ProductModel containing product information.
+     * @param redirectAttributes Redirect attributes for flash messages.
+     * @return Redirect to products page after successful product creation.
+     */
     @PostMapping("/products/new")
     public String saveProduct(ProductModel product, RedirectAttributes redirectAttributes) {
         productService.saveProduct(product); // Save the new product
